@@ -34,10 +34,11 @@ export class Query<Response> {
   }
 
   fetch(invalidate: boolean = false) {
+    if (this.status === 'loading' && !invalidate) return;
+
     if (this.data && this.status !== 'stale' && !invalidate) return;
 
     if (this.cacheTimeHandle) clearInterval(this.cacheTimeHandle);
-
     if (!this.data) this.status = 'loading';
 
     this.subscription = this.$.subscribe({
